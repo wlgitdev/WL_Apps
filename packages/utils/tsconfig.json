@@ -1,0 +1,23 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "module": "CommonJS",
+    "composite": true,
+    "declaration": true,
+    "sourceMap": true,
+    "noEmit": false,
+    "paths": {
+      "@/*": ["./src/*"],
+      "@wl-apps/types": ["../../packages/types/src"]
+    }
+  },
+  "references": [
+    {
+      "path": "../../packages/types"
+    }
+  ],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

@@ -1,0 +1,9 @@
+.env
+
+apps\web\.env
+apps\web\node_modules
+apps\web\dist
+
+apps\server\.env
+apps\server\node_modules
+apps\server\dist

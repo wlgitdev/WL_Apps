@@ -1,0 +1,39 @@
+{
+    "name": "@wl-apps/web",
+    "private": true,
+    "version": "1.0.0",
+    "type": "module",
+    "scripts": {
+      "dev": "vite",
+      "build": "tsc -b && vite build",
+      "preview": "vite preview",
+      "type-check": "tsc --noEmit"
+    },
+    "dependencies": {
+      "@wl-apps/schema-to-ui": "*",
+      "@wl-apps/types": "*",
+      "@wl-apps/utils": "*",
+      "@tanstack/react-query": "^5.69.0",
+      "autoprefixer": "^10.4.20",
+      "react": "^18.3.1",
+      "react-dom": "^18.3.1",
+      "react-router-dom": "^7.0.2",
+      "react-use": "^17.6.0",
+      "recharts": "^2.15.0",
+      "tailwindcss": "^3.4.16"
+    },
+    "devDependencies": {
+      "@eslint/js": "^9.15.0",
+      "@types/react": "^18.3.12",
+      "@types/react-dom": "^18.3.1",
+      "@vitejs/plugin-react": "^4.3.4",
+      "dotenv": "^16.4.7",
+      "eslint-plugin-react-hooks": "^5.0.0",
+      "eslint-plugin-react-refresh": "^0.4.14",
+      "globals": "^15.12.0",
+      "typescript": "~5.6.2",
+      "typescript-eslint": "^8.15.0",
+      "vite": "^6.0.1"
+    }
+  }
+  

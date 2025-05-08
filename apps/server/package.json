@@ -1,0 +1,39 @@
+{
+    "name": "@wl-apps/server",
+    "version": "1.0.0",
+    "main": "dist/server.js",
+    "scripts": {
+      "build": "tsc -b",
+      "start": "node dist/server.js",
+      "dev": "nodemon"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+      "@types/bcryptjs": "^2.4.6",
+      "@types/cors": "^2.8.17",
+      "@types/express": "^5.0.0",
+      "@types/jsonwebtoken": "^9.0.7",
+      "@types/mongoose": "^5.11.97",
+      "@types/node": "^22.10.2",
+      "@types/validator": "^13.12.2",
+      "nodemon": "^3.1.9",
+      "tsconfig-paths": "^4.2.0"
+    },
+    "dependencies": {
+      "@wl-apps/types": "*",
+      "@wl-apps/utils": "*",
+      "bcryptjs": "^2.4.3",
+      "cors": "^2.8.5",
+      "dependencies": "^0.0.1",
+      "dotenv": "^16.4.7",
+      "express": "^4.21.2",
+      "jsonwebtoken": "^9.0.2",
+      "mongoose": "^8.9.0",
+      "rrule": "^2.8.1",
+      "validator": "^13.12.0",
+      "zod": "^3.24.1"
+    }
+  }
+  
