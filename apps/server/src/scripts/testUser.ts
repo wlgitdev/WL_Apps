@@ -3,7 +3,6 @@ import { UserService } from "../services/user.service";
 
 const createTestUser = async () => {
   try {
-    // 1. Connect to database
     await connectDatabase();
     
     await new Promise((resolve) => setTimeout(resolve, 1000));
