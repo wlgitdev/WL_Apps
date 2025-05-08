@@ -26,6 +26,18 @@ rmdir /s /q packages\schema-to-ui\dist 2>nul
 del /f /q packages\schema-to-ui\tsconfig.tsbuildinfo 2>nul
 rmdir /s /q packages\schema-to-ui\.turbo 2>nul
 
+:: Clean packages/pf
+rmdir /s /q packages\pf\node_modules 2>nul
+rmdir /s /q packages\pf\dist 2>nul
+del /f /q packages\pf\tsconfig.tsbuildinfo 2>nul
+rmdir /s /q packages\pf\.turbo 2>nul
+
+:: Clean packages/sortify
+rmdir /s /q packages\sortify\node_modules 2>nul
+rmdir /s /q packages\sortify\dist 2>nul
+del /f /q packages\sortify\tsconfig.tsbuildinfo 2>nul
+rmdir /s /q packages\sortify\.turbo 2>nul
+
 :: Clean apps/web
 rmdir /s /q apps\web\node_modules 2>nul
 rmdir /s /q apps\web\dist 2>nul

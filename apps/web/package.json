@@ -11,6 +11,8 @@
     },
     "dependencies": {
       "@wl-apps/schema-to-ui": "*",
+      "@wl-apps/pf": "*",
+      "@wl-apps/sortify": "*",
       "@wl-apps/types": "*",
       "@wl-apps/utils": "*",
       "@tanstack/react-query": "^5.69.0",

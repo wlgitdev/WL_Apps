@@ -31,6 +31,12 @@ export default defineConfig(({ mode }) => {
         '@wl-apps/schema-to-ui': fileURLToPath(
           new URL('../../packages/schema-to-ui/src', import.meta.url)
         ),
+        '@wl-apps/pf': fileURLToPath(
+          new URL('../../packages/pf/src', import.meta.url)
+        ),
+        '@wl-apps/sortify': fileURLToPath(
+          new URL('../../packages/sortify/src', import.meta.url)
+        ),
         '@wl-apps/server': fileURLToPath(new URL('../server', import.meta.url)),
         '@components': fileURLToPath(
           new URL('./src/components', import.meta.url)
