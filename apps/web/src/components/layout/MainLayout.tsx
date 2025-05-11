@@ -1,7 +1,7 @@
 import { type FC, type ReactNode } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@context/AuthContext';
-// import { Dropdown, DropdownItem } from '@components/common/Dropdown';
+import { Dropdown, DropdownItem } from '@components/common/Dropdown';
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -16,24 +16,24 @@ export const MainLayout: FC<MainLayoutProps> = ({ children }) => {
     navigate('/login');
   };
 
-  // const SettingsTrigger = (
-  //   <button className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium flex items-center gap-1">
-  //     Settings
-  //     <svg
-  //       className="w-4 h-4"
-  //       fill="none"
-  //       stroke="currentColor"
-  //       viewBox="0 0 24 24"
-  //     >
-  //       <path
-  //         strokeLinecap="round"
-  //         strokeLinejoin="round"
-  //         strokeWidth={2}
-  //         d="M19 9l-7 7-7-7"
-  //       />
-  //     </svg>
-  //   </button>
-  // );
+  const AppsTrigger = (
+    <button className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium flex items-center gap-1">
+      Apps
+      <svg
+        className="w-4 h-4"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M19 9l-7 7-7-7"
+        />
+      </svg>
+    </button>
+  );
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -48,6 +48,11 @@ export const MainLayout: FC<MainLayoutProps> = ({ children }) => {
                 >
                   Home
                 </Link>
+                <Dropdown trigger={AppsTrigger}>
+                  <Link to="/pf">
+                    <DropdownItem>PF</DropdownItem>
+                  </Link>
+                </Dropdown>
               </div>
             </div>
             <div className="flex items-center">
