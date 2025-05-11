@@ -57,8 +57,7 @@ transactionUpdateUISchema.fields.recurOn = {
 // List Schema
 const listSchema = adapter.toListSchema<Transaction>(transactionSchema, {
   excludeFields: [...UI_EXCLUDE_FIELDS, ...UI_READONLY_FIELDS],
-  pageSize: 10,
-  visibleFields: ['name', 'amount']
+  visibleFields: ['name', 'amount', 'categories']
 });
 
 Object.entries(listSchema.columns).forEach(([, column]) => {
@@ -68,7 +67,22 @@ Object.entries(listSchema.columns).forEach(([, column]) => {
 
 export const transactionListUISchema: ListSchema<Transaction> = {
   ...listSchema,
-  columns: listSchema.columns,
+  columns: {
+    ...listSchema.columns,
+    categories: {
+      label: 'Categories',
+      field: 'categories',
+      type: 'array',
+      sortable: true,
+      filterable: true,
+      format: {
+        array: {
+          maxItems: 3,
+          more: '...',
+        }
+      }
+    }
+  },
   options: {
     ...listSchema.options,
     defaultSort: {

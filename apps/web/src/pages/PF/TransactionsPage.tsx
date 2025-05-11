@@ -4,13 +4,12 @@ import {
   BankAccount,
   BankAccountNamingScheme,
   TransactionNamingScheme as EntityNamingScheme,
+  Transaction,
   TransactionCategory,
   TransactionCategoryNamingScheme,
 } from '@wl-apps/types';
-import { transactionApi as entityApi } from '@api/PF/transaction';
-import { bankAccountApi } from '@/api/PF/bankAccount';
+import { transactionCategoryApi, transactionApi as entityApi, bankAccountApi } from '@api/PF';
 import { getTransactionSchema } from '@/registry/PF/setupSchemaRegistry';
-import { transactionCategoryApi } from '@/api/PF/transactionCategory';
 
 export const TransactionsPage = () => {
   const fetchReferenceData = async (
@@ -42,12 +41,30 @@ export const TransactionsPage = () => {
     return [];
   };
 
+  // Pre-fetch categories for the list view
+  const transformData = async (transaction: Transaction) => {
+    const categories = await fetchReferenceData(TransactionCategoryNamingScheme.MODEL);
+    return {
+      ...transaction,
+      categories: transaction.categories?.map(categoryId => {
+        const category = categories.find(c => c._id === categoryId);
+        return category?.name || categoryId;
+      })
+    };
+  };
+
   return (
     <BaseEntityPage
-      entityApi={entityApi}
+      entityApi={{
+        ...entityApi,
+        getAll: async () => {
+          const transactions = await entityApi.getAll();
+          return Promise.all(transactions.map(transformData));
+        }
+      }}
       getEntitySchema={getTransactionSchema}
       entityNamingScheme={EntityNamingScheme}
       fetchReferenceData={fetchReferenceData} 
     />
   );
-}
+};

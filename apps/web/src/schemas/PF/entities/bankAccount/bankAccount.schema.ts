@@ -32,7 +32,6 @@ export const bankAccountUpdateUISchema = adapter.toUISchema(bankAccountSchema, {
 
 const listSchema = adapter.toListSchema<BankAccount>(bankAccountSchema, {
   excludeFields: [...UI_EXCLUDE_FIELDS, ...UI_READONLY_FIELDS],
-  pageSize: 10,  
 });
 
 Object.entries(listSchema.columns).forEach(([, column]) => {

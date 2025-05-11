@@ -88,6 +88,7 @@ export type RecurOnGroupKey =
 export interface Transaction extends BaseModel {
   name: string;
   bankAccount: string; // Reference to BankAccount
+  categories: string[]; // Reference to TransactionCategories
   direction: TransactionDirection;
   amount: number;
   notes?: string;

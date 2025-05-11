@@ -27,7 +27,6 @@ export const transactionCategoryUpdateUISchema = adapter.toUISchema(transactionC
 // List Schema
 const listSchema = adapter.toListSchema<TransactionCategory>(transactionCategorySchema, {
   excludeFields: [...UI_EXCLUDE_FIELDS, ...UI_READONLY_FIELDS],
-  pageSize: 10
 });
 
 Object.entries(listSchema.columns).forEach(([, column]) => {

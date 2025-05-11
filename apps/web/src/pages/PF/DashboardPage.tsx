@@ -1,57 +1,13 @@
 import { TransactionForecast, BankAccount, BankAccountNamingScheme } from '@wl-apps/types';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { bankAccountApi } from "@api/PF/bankAccount";
 import { ForecastChart } from '@components/PF/ForecastChart';
-
-const BankAccountList: React.FC<{
-  selectedAccount?: string;
-  onSelect: (accountId: string) => void;
-}> = ({ selectedAccount, onSelect }) => {
-  const [accounts, setAccounts] = useState<BankAccount[]>([]);
-
-  useEffect(() => {
-    const fetchAccounts = async () => {
-      const data = await bankAccountApi.getAll();
-      setAccounts(data);
-      // Select first account by default if none selected
-
-      const selection = data[0] || {} as BankAccount; 
-      if (!selectedAccount && data.length > 0 && selection.recordId) {
-        onSelect(selection.recordId);
-      }
-    };
-    fetchAccounts();
-  }, [selectedAccount, onSelect]);
-
-  return (
-    <div className="bg-white rounded-lg shadow p-4 space-y-2">
-      <h2 className="text-lg font-semibold mb-4">{BankAccountNamingScheme.PLURAL}</h2>
-      <div className="space-y-2">
-        {accounts.map((account) => (
-          <button
-            key={account.recordId}
-            onClick={() => account.recordId && onSelect(account.recordId)}
-            className={`w-full text-left p-3 rounded-lg transition-colors duration-200 ${selectedAccount === account.recordId
-                ? 'bg-blue-50 border-l-4 border-blue-500'
-                : 'hover:bg-gray-50 border-l-4 border-transparent'
-              }`}
-          >
-            <div className="font-medium">{account.name || `Account ${account.recordId}`} ({account.balance})</div>
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-};
+import { DynamicList, ListSchema } from '@wl-apps/schema-to-ui';
 
 export const DashboardPage: React.FC = () => {
   const [selectedAccount, setSelectedAccount] = useState<string>();
   const [endDate, setEndDate] = useState<string>();
   const [forecast, setForecast] = useState<TransactionForecast[]>();
-
-  const handleAccountSelect = useCallback((accountId: string) => {
-    setSelectedAccount(accountId);
-  }, []);
 
   // Set default end date to end of next month
   useEffect(() => {
@@ -64,20 +20,48 @@ export const DashboardPage: React.FC = () => {
   useEffect(() => {
     const fetchForecast = async () => {
       if (!selectedAccount || !endDate) return;
-
       const data = await bankAccountApi.generateForecast(
         selectedAccount,
         new Date(),
         new Date(endDate)
       );
-
       setForecast(data);
     };
-
     fetchForecast();
   }, [selectedAccount, endDate]);
 
-  // Get today's date in YYYY-MM-DD format for min attribute
+  const accountListSchema: ListSchema<BankAccount> = {
+    columns: {
+      name: {
+        label: 'Name',
+        field: 'name',
+        type: 'text',
+        sortable: true,
+        filterable: true
+      },
+      balance: {
+        label: 'Balance',
+        field: 'balance',
+        type: 'number',
+        sortable: true,
+      },
+    },
+    options: {
+      selection: {
+        enabled: true,
+        type: 'single',
+        onSelect: (rows) => {
+          if (rows[0]?.recordId) {
+            setSelectedAccount(rows[0].recordId);
+          }
+        },
+      },
+      pagination: {
+        enabled: false,
+      },
+    },
+  };
+
   const today = new Date().toISOString().split('T')[0];
 
   return (
@@ -101,10 +85,15 @@ export const DashboardPage: React.FC = () => {
         <div className="grid grid-cols-4 gap-6">
           {/* Account List */}
           <div className="col-span-1">
-            <BankAccountList
-              selectedAccount={selectedAccount}
-              onSelect={handleAccountSelect}
+            <div className="bg-white rounded-lg shadow p-4">
+              <h2 className="text-lg font-semibold mb-4">{BankAccountNamingScheme.PLURAL}</h2>
+              <DynamicList<BankAccount>
+                schema={accountListSchema}
+                queryKey={['bankAccounts']}
+                queryFn={bankAccountApi.getAll}
+                initialRowSelection={selectedAccount ? { [selectedAccount]: true } : {}}
             />
+            </div>
           </div>
 
           {/* Chart */}

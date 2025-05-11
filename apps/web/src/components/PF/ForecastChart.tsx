@@ -1,5 +1,5 @@
-import { TransactionForecast } from '@pf-v2/types';
-import { useEffect, useRef, useState } from 'react';
+import { TransactionForecast, TransactionDirection } from '@wl-apps/types';
+import { useState } from 'react';
 import {
   LineChart,
   Line,
@@ -10,10 +10,19 @@ import {
   ResponsiveContainer,
   Dot
 } from 'recharts';
+import { DynamicList, ListSchema } from '@wl-apps/schema-to-ui';
+
+interface TransactionRow {
+  recordId: string;
+  date: Date;
+  name: string;
+  amount: number;
+  direction: TransactionDirection;
+  balance: number;
+}
 
 export const ForecastChart = ({ data }: { data: TransactionForecast[] }) => {
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
-  const selectedRef = useRef<HTMLDivElement>(null);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   // Transform data for Recharts
   const chartData = data.map(point => ({
@@ -22,23 +31,104 @@ export const ForecastChart = ({ data }: { data: TransactionForecast[] }) => {
     originalPoint: point
   }));
 
-  // Get all transactions across all dates
-  const allTransactions = data.flatMap(point =>
-    (point.transactions || []).map(tx => ({
-      ...tx,
-      date: new Date(point.date).toLocaleDateString(),
+  // Transform transactions for DynamicList
+  const allTransactions: TransactionRow[] = data.flatMap((point, index) =>
+    (point.transactions || []).map((tx, txIndex) => ({
+      recordId: `${index}-${txIndex}`, // Generate unique ID for each transaction
+      date: new Date(point.date),
+      name: tx.name,
+      amount: tx.amount,
+      direction: tx.direction,
       balance: point.balance
     }))
   );
 
-  useEffect(() => {
-    if (selectedDate && selectedRef.current) {
-      selectedRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
+  // Define ListSchema for transactions
+  const transactionListSchema: ListSchema<TransactionRow> = {
+    columns: {
+      date: {
+        label: 'Date',
+        field: 'date',
+        type: 'date',
+        sortable: true,
+        filterable: true,
+        format: {
+          date: {
+            format: 'DD MM'
+          }
+        }
+      },
+      name: {
+        label: 'Description',
+        field: 'name',
+        type: 'text',
+        sortable: true,
+        filterable: true
+      },
+      amount: {
+        label: 'Amount',
+        field: 'amount',
+        type: 'number',
+        sortable: true,
+        filterable: true,
+        format: {
+          number: {
+            precision: 2,
+          }
+        }
+      },
+      balance: {
+        label: 'Balance',
+        field: 'balance',
+        type: 'number',
+        sortable: true,
+        format: {
+          number: {
+            precision: 2,
+          }
+        }
     }
-  }, [selectedDate]);
+    },
+    options: {
+      defaultSort:  {
+        field: 'date',
+        direction: 'asc'
+      },
+      selection: {
+        enabled: true,
+        type: 'single',
+        onSelect: (selectedRows) => {
+          if (selectedRows.length > 0 && selectedRows[0]) {
+            setSelectedDate(selectedRows[0].date);
+          } else {
+            setSelectedDate(null);
+          }
+        }
+      },
+      pagination: {
+        enabled: true,
+        pageSize: 10000,
+
+      }
+    }
+  };
+
+  // Custom query function for DynamicList
+  const queryFn = async () => {
+    return allTransactions.map(tx => ({
+      ...tx,
+      className: `${
+        tx.direction === 'incoming' ? 'text-green-600' : 'text-red-600'
+      } ${tx.date === selectedDate ? 'bg-blue-50' : ''}`
+    }));
+  };
+
+  // Add initialRowSelection prop
+  const initialRowSelection = selectedDate 
+    ? allTransactions
+        .filter(tx => tx.date === selectedDate)
+        .reduce((acc, tx) => ({ ...acc, [tx.recordId]: true }), {})
+    : {};
 
   return (
     <div>
@@ -79,60 +169,22 @@ export const ForecastChart = ({ data }: { data: TransactionForecast[] }) => {
             dot={(props) => (
               <Dot
                 {...props}
-                fill={
-                  props.payload.date === selectedDate ? "#ff0000" : "#8884d8"
-                }
-                r={props.payload.date === selectedDate ? 6 : 4} // Highlight selected point
+                fill={props.payload.date === selectedDate ? "#ff0000" : "#8884d8"}
+                r={props.payload.date === selectedDate ? 6 : 4}
               />
             )}
           />
         </LineChart>
       </ResponsiveContainer>
 
-      <div className="mt-4 max-h-96 overflow-y-auto">
-        {allTransactions.map((transaction, index) => (
-          <div
-            key={index}
-            ref={transaction.date === selectedDate ? selectedRef : null}
-            className={`
-              p-3 rounded mb-2
-              ${transaction.date === selectedDate ? 'ring-2 ring-blue-500' : ''}
-                ${
-                  transaction.direction === 'incoming'
-                    ? 'bg-green-50 border-l-4 border-green-500'
-                    : 'bg-red-50 border-l-4 border-red-500'
-                }
-              `}
-            onClick={() => setSelectedDate(transaction.date)}
-          >
-            <div className="flex justify-between">
-              <div>
-                <span className="text-gray-500 text-sm ml-2">
-                  {transaction.date}
-                </span>
-                <span className="font-bold ml-2">{transaction.name}</span>
-              </div>
-              <div>
-              <span
-                className={`
-                          font-bold
-                  ${
-                    transaction.direction === 'incoming'
-                      ? 'text-green-600'
-                      : 'text-red-600'
-                  }
-                `}
-              >
-                {transaction.direction === 'incoming' ? '+' : '-'}
-                {transaction.amount.toFixed(2)}
-              </span>              
-              <span className="text-gray-500 text-sm ml-2">
-                {transaction.balance.toFixed(2)}
-              </span>
-              </div>
-            </div>
-          </div>
-        ))}
+      <div className="mt-4">
+        <DynamicList<TransactionRow>
+          schema={transactionListSchema}
+          queryKey={['forecast-transactions', selectedDate, data]}
+          queryFn={queryFn}
+          className="w-full"
+          initialRowSelection={initialRowSelection}
+        />
       </div>
     </div>
   );
