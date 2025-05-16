@@ -3,14 +3,17 @@ import {
   useContext, 
   useState,  
   type FC,
-  type ReactNode 
+  type ReactNode,
+  useEffect
 } from 'react';
-import { authApi } from '@api/auth';
+import { authApi } from '@/api';
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  login: (token: string) => void; 
+  isConnectedToSpotify: boolean;
+  login: () => void; 
   logout: () => void;
+  userId: string;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -24,8 +27,17 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     authApi.isAuthenticated()
   );
 
-  const login = (token: string) => {
-    localStorage.setItem("token", token);
+  const [isConnectedToSpotify, setIsConnectedToSpotify] = useState(false);
+  useEffect(() => {
+    authApi.isConnectedToSpotify().then(setIsConnectedToSpotify);
+  }, []);
+
+  const [userId, setUserId] = useState('');
+  useEffect(() => {
+    authApi.userId().then(setUserId);
+  }, []);
+
+  const login = () => {
     setIsAuthenticated(true);
   };
 
@@ -35,7 +47,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, isConnectedToSpotify, login, logout, userId }}>
       {children}
     </AuthContext.Provider>
   );

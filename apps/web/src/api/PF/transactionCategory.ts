@@ -1,5 +1,5 @@
 import { type TransactionCategory, TransactionCategoryFilters as Filters, TransactionCategoryNamingScheme } from "@wl-apps/types";
-import { API_ENDPOINTS } from "../config";
+import { SERVER_API_ROUTES } from "@wl-apps/utils";
 import { ApiClient } from "../apiClient";
 import { NotFoundError } from "../errors";
 
@@ -7,13 +7,13 @@ export const transactionCategoryApi = {
   // Get all data
   getAll: async (): Promise<TransactionCategory[]> => {
     return ApiClient.get<TransactionCategory[]>(
-      API_ENDPOINTS.PF.TRANSACTION_CATEGORIES
+      SERVER_API_ROUTES.pf.transaction_categories
     );
   },
 
   getById: async (id: string): Promise<TransactionCategory> => {
     const categories = await ApiClient.get<TransactionCategory[]>(
-      API_ENDPOINTS.PF.TRANSACTION_CATEGORIES
+      SERVER_API_ROUTES.pf.transaction_categories
     );
     const category = categories.find(record => record.recordId === id);
 
@@ -28,7 +28,7 @@ export const transactionCategoryApi = {
     record: Omit<TransactionCategory, 'recordId' | 'createdAt' | 'updatedAt'>
   ): Promise<TransactionCategory> => {
     return ApiClient.post<TransactionCategory>(
-      API_ENDPOINTS.PF.TRANSACTION_CATEGORIES,
+      SERVER_API_ROUTES.pf.transaction_categories,
       record
     );
   },
@@ -38,13 +38,13 @@ export const transactionCategoryApi = {
     record: Partial<TransactionCategory>
   ): Promise<TransactionCategory> => {
     return ApiClient.put<TransactionCategory>(
-      `${API_ENDPOINTS.PF.TRANSACTION_CATEGORIES}/${id}`,
+      `${SERVER_API_ROUTES.pf.transaction_categories}/${id}`,
       record
     );
   },
 
   delete: async (id: string): Promise<void> => {
-    return ApiClient.delete(`${API_ENDPOINTS.PF.TRANSACTION_CATEGORIES}/${id}`);
+    return ApiClient.delete(`${SERVER_API_ROUTES.pf.transaction_categories}/${id}`);
   },
 
   // Search data
@@ -63,7 +63,7 @@ export const transactionCategoryApi = {
     queryParams.set('matchType', 'contains');
 
     return ApiClient.get<TransactionCategory[]>(
-      `${API_ENDPOINTS.PF.TRANSACTION_CATEGORIES}?${queryParams.toString()}`
+      `${SERVER_API_ROUTES.pf.transaction_categories}?${queryParams.toString()}`
     );
   }
 };

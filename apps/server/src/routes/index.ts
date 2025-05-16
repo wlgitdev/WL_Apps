@@ -1,7 +1,12 @@
 import express from "express";
 import authRoutes from "./auth.routes";
 import healthRoutes from "./health";
-
+import { API_PREFIX, SERVER_API_ROUTES } from "@wl-apps/utils";
+import {
+  trackStatesRouter,
+  spotifyRouter,
+  usersRouter
+} from './Sortify'
 import {
   bankAccountRouter,
   transactionCategoryRouter,
@@ -9,14 +14,16 @@ import {
 } from './PF'
 
 const router = express.Router();
-const apiVersion = 1;
-const baseUrl = `/api/v${apiVersion}`;
 
-router.use(`${baseUrl}/auth`, authRoutes);
-router.use(`${baseUrl}/health`, healthRoutes);
+router.use(`/${API_PREFIX}/${SERVER_API_ROUTES.auth.base}`, authRoutes);
+router.use(`/${API_PREFIX}/${SERVER_API_ROUTES.health.base}`, healthRoutes);
 
-router.use(`${baseUrl}/pf/bank-accounts`, bankAccountRouter);
-router.use(`${baseUrl}/pf/transaction-categories`, transactionCategoryRouter);
-router.use(`${baseUrl}/pf/transactions`, transactionRouter);
+router.use(`/${API_PREFIX}/${SERVER_API_ROUTES.sortify.users.base}`, usersRouter);
+router.use(`/${API_PREFIX}/${SERVER_API_ROUTES.sortify.trackStates.base}`, trackStatesRouter);
+router.use(`/${API_PREFIX}/${SERVER_API_ROUTES.sortify.spotify.base}`, spotifyRouter);
+
+router.use(`/${API_PREFIX}/${SERVER_API_ROUTES.pf.bank_accounts}`, bankAccountRouter);
+router.use(`/${API_PREFIX}/${SERVER_API_ROUTES.pf.transaction_categories}`, transactionCategoryRouter);
+router.use(`/${API_PREFIX}/${SERVER_API_ROUTES.pf.transactions}`, transactionRouter);
 
 export default router;

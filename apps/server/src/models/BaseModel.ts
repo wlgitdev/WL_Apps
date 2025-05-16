@@ -28,9 +28,3 @@ export const baseModelSchema = new Schema({
     }
   })
 });
-
-export const isBaseModelField = (
-  fieldName: string
-): fieldName is BaseModelField => {
-  return BASE_MODEL_FIELDS.includes(fieldName as BaseModelField);
-};

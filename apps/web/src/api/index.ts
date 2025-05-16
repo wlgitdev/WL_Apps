@@ -1,5 +1,5 @@
 export * from './PF'
+export * from './Sortify'
 export * from './apiClient'
 export * from './auth'
-export * from './config'
 export * from './errors'

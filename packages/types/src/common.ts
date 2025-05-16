@@ -12,6 +12,18 @@ export type ApiResponse<T> = {
   data: T;
 };
 
+export interface SpotifyCallbackData {
+  code: string;
+  state: string;
+}
+
+export interface SpotifyTokenResponse {
+  access_token: string;
+  refresh_token: string;
+  token_type: string;
+  expires_in: number;
+}
+
 export interface BatchResult<T> {
   success: boolean;
   data?: T;

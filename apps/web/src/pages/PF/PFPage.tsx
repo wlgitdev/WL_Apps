@@ -5,6 +5,7 @@ import { Dropdown, DropdownItem } from '@components/common/Dropdown';
 import { BankAccountNamingScheme, TransactionCategoryNamingScheme, TransactionNamingScheme } from '@wl-apps/types';
 import { BankAccountsPage, TransactionCategoriesPage, TransactionsPage } from '@pages/PF';
 import DashboardPage from './DashboardPage';
+import { SERVER_API_ROUTES } from '@wl-apps/utils';
 
 const PFLayout = ({ children }: { children: ReactNode }) => {
   const SettingsTrigger = (
@@ -33,24 +34,23 @@ const PFLayout = ({ children }: { children: ReactNode }) => {
           <div className="flex justify-between h-16">
             <div className="flex">
               <div className="flex-shrink-0 flex items-center">
-                <h1 className="text-xl font-bold">PF Manager</h1>
+                <Link
+                  to={`/${SERVER_API_ROUTES.pf.dashboard}`}
+                  className="text-xl font-bold"
+                >
+                  PF
+                </Link>                
               </div>
               <div className="ml-6 flex space-x-4 items-center">
-                <Link
-                  to="/pf/dashboard"
-                  className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Dashboard
-                </Link>
                 
                 <Dropdown trigger={SettingsTrigger}>
-                  <Link to="/pf/bank-accounts">
+                  <Link to={`/${SERVER_API_ROUTES.pf.bank_accounts}`}>
                     <DropdownItem>{BankAccountNamingScheme.PLURAL}</DropdownItem>
                   </Link>
-                  <Link to="/pf/transaction-categories">
+                  <Link to={`/${SERVER_API_ROUTES.pf.transaction_categories}`}>
                     <DropdownItem>{TransactionCategoryNamingScheme.PLURAL}</DropdownItem>
                   </Link>
-                  <Link to="/pf/transactions">
+                  <Link to={`/${SERVER_API_ROUTES.pf.transactions}`}>
                     <DropdownItem>{TransactionNamingScheme.PLURAL}</DropdownItem>
                   </Link>
                 </Dropdown>
@@ -80,7 +80,7 @@ export const PFPage: React.FC = () => {
         element={
           <PFLayout>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h2 className="text-2xl font-bold mb-6">PF Manager</h2>
+              <h2 className="text-2xl font-bold mb-6">PF</h2>
             </div>
           </PFLayout>
         } 

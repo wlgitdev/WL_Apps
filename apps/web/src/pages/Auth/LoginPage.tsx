@@ -19,7 +19,7 @@ export const LoginPage = () => {
     const response = await authApi.login(credentials);
     
     if (response.token) {
-      login(response.token);  // Update auth context with token from data object
+      login();  // Update auth context with token from data object
       navigate('/');
     } else {
       throw new Error('Invalid server response format / login failed');

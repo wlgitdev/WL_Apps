@@ -1,17 +1,18 @@
 import { TransactionFilters as Filters, TransactionNamingScheme, type Transaction } from "@wl-apps/types";
-import { API_ENDPOINTS } from "../config";
+
+import { SERVER_API_ROUTES } from "@wl-apps/utils";
 import { NotFoundError } from "../errors";
 import { ApiClient } from "../apiClient";
 
 export const transactionApi = {
   // Get all data
   getAll: async (): Promise<Transaction[]> => {
-    return ApiClient.get<Transaction[]>(API_ENDPOINTS.PF.TRANSACTIONS);
+    return ApiClient.get<Transaction[]>(SERVER_API_ROUTES.pf.transactions);
   },
 
   getById: async (id: string): Promise<Transaction> => {
     const transactions = await ApiClient.get<Transaction[]>(
-      API_ENDPOINTS.PF.TRANSACTIONS
+      SERVER_API_ROUTES.pf.transactions
     );
     const transaction = transactions.find(record => record.recordId === id);
 
@@ -25,7 +26,7 @@ export const transactionApi = {
   create: async (
     record: Omit<Transaction, 'recordId' | 'createdAt' | 'updatedAt'>
   ): Promise<Transaction> => {
-    return ApiClient.post<Transaction>(API_ENDPOINTS.PF.TRANSACTIONS, record);
+    return ApiClient.post<Transaction>(SERVER_API_ROUTES.pf.transactions, record);
   },
 
   update: async (
@@ -33,13 +34,13 @@ export const transactionApi = {
     record: Partial<Transaction>
   ): Promise<Transaction> => {
     return ApiClient.put<Transaction>(
-      `${API_ENDPOINTS.PF.TRANSACTIONS}/${id}`,
+      `${SERVER_API_ROUTES.pf.transactions}/${id}`,
       record
     );
   },
 
   delete: async (id: string): Promise<void> => {
-    return ApiClient.delete(`${API_ENDPOINTS.PF.TRANSACTIONS}/${id}`);
+    return ApiClient.delete(`${SERVER_API_ROUTES.pf.transactions}/${id}`);
   },
 
   // Search data
@@ -56,7 +57,7 @@ export const transactionApi = {
     queryParams.set('matchType', 'contains');
 
     return ApiClient.get<Transaction[]>(
-      `${API_ENDPOINTS.PF.TRANSACTIONS}?${queryParams.toString()}`
+      `${SERVER_API_ROUTES.pf.transactions}?${queryParams.toString()}`
     );
   },
 
@@ -76,7 +77,7 @@ export const transactionApi = {
     });
 
     return ApiClient.get<Transaction[]>(
-      `${API_ENDPOINTS.PF.TRANSACTIONS_WITHIN_RANGE}?${queryParams.toString()}`
+      `${SERVER_API_ROUTES.pf.transactions_within_range}?${queryParams.toString()}`
     );
   }
 };

@@ -17,8 +17,3 @@ export type BaseModelFieldType = {
 export type BaseModel = Readonly<{
   [K in BaseModelField]: BaseModelFieldType[K];
 }>;
-
-// Type guard for base model fields
-export const isBaseModelField = (field: string): field is BaseModelField => {
-  return BASE_MODEL_FIELDS.includes(field as BaseModelField);
-};

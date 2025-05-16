@@ -24,6 +24,16 @@ const envSchema = z.object({
   JWT_EXPIRES_IN: z.string().default("1d"),
   // CORS
   ALLOWED_ORIGINS: z.string().transform((str) => str.split(",")),
+  // Spotify Configuration
+  SPOTIFY_CLIENT_ID: z.string({
+    required_error: "Spotify client ID is required",
+  }),
+  SPOTIFY_CLIENT_SECRET: z.string({
+    required_error: "Spotify client secret is required",
+  }),
+  SPOTIFY_TOKEN_ENCRYPTION_KEY: z.string({
+    required_error: "Spotify token encryption key is required",
+  }),
 });
 
 const validateEnv = () => {

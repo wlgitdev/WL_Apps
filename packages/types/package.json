@@ -7,5 +7,8 @@
   "scripts": {
     "build": "tsc --build",
     "dev": "tsc --watch"
+  },
+  "devDependencies": {    
+    "@types/spotify-web-api-node": "^5.0.11"
   }
 }

@@ -52,6 +52,9 @@ export const MainLayout: FC<MainLayoutProps> = ({ children }) => {
                   <Link to="/pf">
                     <DropdownItem>PF</DropdownItem>
                   </Link>
+                  <Link to="/sortify">
+                    <DropdownItem>Sortify</DropdownItem>
+                  </Link>
                 </Dropdown>
               </div>
             </div>

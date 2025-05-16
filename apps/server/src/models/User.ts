@@ -5,6 +5,7 @@ import {
   createBooleanConfig,
 } from "./commonValidators";
 import bcrypt from "bcryptjs";
+import { SpotifyTokensService } from '../services/Sortify/spotifyTokens.service';
 
 export interface UserDocument extends User, Document {}
 type UserModel = Model<UserDocument, {}, UserMethods>;
@@ -94,8 +95,6 @@ const userSchema = new Schema(
   }
 );
 
-
-
 // Virtual for recordId that maps to _id
 userSchema.virtual('recordId').get(function() {
   return this._id;
@@ -104,6 +103,12 @@ userSchema.virtual('recordId').get(function() {
 userSchema.virtual("fullName").get(function () {
   return `${this.firstName} ${this.lastName}`;
 });
+
+userSchema.methods.isConnectedToSpotify = async function () {
+  const spotifyTokensService = new SpotifyTokensService();
+  const result = await spotifyTokensService.getSpotifyTokens({ userId: this._id.toString() });
+  return result.success && result.data.length > 0;
+};
 
 // Pre-save middleware to hash password
 userSchema.pre('save', async function(next) {

@@ -6,14 +6,16 @@ import { HomePage } from '@pages/Home/HomePage';
 import { PFPage } from '@pages/PF/PFPage';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import './App.css';
+import SortifyPage from './pages/Sortify/SortifyPage';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated } = useAuth();
   return !isAuthenticated ? <Navigate to="/login" replace /> : <>{children}</>;
 };
 
+export const queryClient = new QueryClient();
+
 function App() {
-  const queryClient = new QueryClient();
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -36,6 +38,16 @@ function App() {
               <ProtectedRoute>
                 <MainLayout>
                   <PFPage />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/sortify/*"
+            element={
+              <ProtectedRoute>
+                <MainLayout>
+                  <SortifyPage />
                 </MainLayout>
               </ProtectedRoute>
             }

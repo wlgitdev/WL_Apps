@@ -1,16 +1,16 @@
 import { TransactionForecast, type BankAccount, BankAccountFilters as Filters, BankAccountNamingScheme } from "@wl-apps/types";
-import { API_ENDPOINTS } from "../config";
 import { ApiClient } from "../apiClient";
 import { NotFoundError } from "../errors";
+import { SERVER_API_ROUTES } from "@wl-apps/utils";
 
 export const bankAccountApi = {
   getAll: async (): Promise<BankAccount[]> => {
-    return ApiClient.get<BankAccount[]>(API_ENDPOINTS.PF.BANK_ACCOUNTS);
+    return ApiClient.get<BankAccount[]>(SERVER_API_ROUTES.pf.bank_accounts);
   },
 
   getById: async (id: string): Promise<BankAccount> => {
     const accounts = await ApiClient.get<BankAccount[]>(
-      API_ENDPOINTS.PF.BANK_ACCOUNTS
+      SERVER_API_ROUTES.pf.bank_accounts
     );
     const account = accounts.find(record => record.recordId === id);
 
@@ -25,7 +25,7 @@ export const bankAccountApi = {
   create: async (
     data: Omit<BankAccount, 'recordId' | 'createdAt' | 'updatedAt'>
   ): Promise<BankAccount> => {
-    return ApiClient.post<BankAccount>(API_ENDPOINTS.PF.BANK_ACCOUNTS, data);
+    return ApiClient.post<BankAccount>(SERVER_API_ROUTES.pf.bank_accounts, data);
   },
 
   update: async (
@@ -33,13 +33,13 @@ export const bankAccountApi = {
     data: Partial<BankAccount>
   ): Promise<BankAccount> => {
     return ApiClient.put<BankAccount>(
-      `${API_ENDPOINTS.PF.BANK_ACCOUNTS}/${id}`,
+      `${SERVER_API_ROUTES.pf.bank_accounts}/${id}`,
       data
     );
   },
 
   delete: async (id: string): Promise<void> => {
-    return ApiClient.delete(`${API_ENDPOINTS.PF.BANK_ACCOUNTS}/${id}`);
+    return ApiClient.delete(`${SERVER_API_ROUTES.pf.bank_accounts}/${id}`);
   },
 
   search: async (criteria: Partial<Filters>): Promise<BankAccount[]> => {
@@ -53,7 +53,7 @@ export const bankAccountApi = {
 
     queryParams.set('matchType', 'contains');
 
-    return ApiClient.get<BankAccount[]>(`${API_ENDPOINTS.PF.BANK_ACCOUNTS}?${queryParams.toString()}`);
+    return ApiClient.get<BankAccount[]>(`${SERVER_API_ROUTES.pf.bank_accounts}?${queryParams.toString()}`);
   },
 
   generateForecast: async (
@@ -62,7 +62,7 @@ export const bankAccountApi = {
     endDate: Date
   ): Promise<TransactionForecast[]> => {
     return ApiClient.post<TransactionForecast[]>(
-        `${API_ENDPOINTS.PF.BANK_ACCOUNTS}/${id}/forecast`,
+        `${SERVER_API_ROUTES.pf.bank_accounts}/${id}/forecast`,
         {
           startDate: startDate.toISOString(),
           endDate: endDate.toISOString(),

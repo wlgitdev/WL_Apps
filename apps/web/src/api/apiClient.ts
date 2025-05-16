@@ -2,6 +2,8 @@ import { ApiResponse, GenericError } from '@wl-apps/types';
 import { getAuthHeader } from '@utils/auth';
 import { ApiError, AuthenticationError, NetworkError, NotFoundError, ValidationError } from './errors';
 
+const apiServerPath = import.meta.env.VITE_API_URL;
+
 export class ApiClient {
   private static async handleResponse<T>(
     response: Response
@@ -61,7 +63,7 @@ export class ApiClient {
   ): Promise<T> {
     try {
       const queryString = params ? `?${new URLSearchParams(params)}` : '';
-      const response = await fetch(`${url}${queryString}`, {
+      const response = await fetch(`${apiServerPath}/${url}${queryString}`, {
         headers: getAuthHeader()
       });
 
@@ -83,7 +85,7 @@ export class ApiClient {
             ...getAuthHeader(),
             'Content-Type': 'application/json'
           };
-      const response = await fetch(url, {
+      const response = await fetch(apiServerPath + '/' + url, {
         method: 'POST',
         headers: headers,
         body: JSON.stringify(data)
@@ -101,7 +103,7 @@ export class ApiClient {
 
   static async put<T>(url: string, data: unknown): Promise<T> {
     try {
-      const response = await fetch(url, {
+      const response = await fetch(apiServerPath + '/' + url, {
         method: 'PUT',
         headers: {
           ...getAuthHeader(),
@@ -122,7 +124,7 @@ export class ApiClient {
 
   static async delete(url: string): Promise<void> {
     try {
-      const response = await fetch(url, {
+      const response = await fetch(apiServerPath + '/' + url, {
         method: 'DELETE',
         headers: getAuthHeader()
       });

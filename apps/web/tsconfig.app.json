@@ -54,19 +54,7 @@
       ],
       "@wl-apps/schema-to-ui/*": [
         "../../packages/schema-to-ui/src/*"
-      ],
-      "@wl-apps/pf": [
-        "../../packages/pf/src"
-      ],
-      "@wl-apps/pf/*": [
-        "../../packages/pf/src/*"
-      ],
-      "@wl-apps/sortify": [
-        "../../packages/sortify/src"
-      ],
-      "@wl-apps/sortify/*": [
-        "../../packages/sortify/src/*"
-      ],
+      ]
     }
   },
   "include": [
@@ -86,12 +74,6 @@
     },
     {
       "path": "../../packages/schema-to-ui"
-    },
-    {
-      "path": "../../packages/pf"
-    },
-    {
-      "path": "../../packages/sortify"
-    },
+    }
   ]
 }
