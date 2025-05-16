@@ -1,10 +1,11 @@
-import { Routes, Route, Navigate } from "react-router-dom";
-import { MainLayout } from "@components/layout/MainLayout";
-import { LoginPage } from "@pages/Auth/LoginPage";
-import { AuthProvider, useAuth } from "@context/AuthContext";
-import { HomePage } from "@pages/Home/HomePage";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import "./App.css";
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { MainLayout } from '@components/layout/MainLayout';
+import { LoginPage } from '@pages/Auth/LoginPage';
+import { AuthProvider, useAuth } from '@context/AuthContext';
+import { HomePage } from '@pages/Home/HomePage';
+import { PFPage } from '@pages/PF/PFPage';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import './App.css';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated } = useAuth();
@@ -30,21 +31,11 @@ function App() {
             }
           />
           <Route
-            path="/pf"
+            path="/pf/*"
             element={
               <ProtectedRoute>
                 <MainLayout>
-                  <HomePage />
-                </MainLayout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/sortify"
-            element={
-              <ProtectedRoute>
-                <MainLayout>
-                  <HomePage />
+                  <PFPage />
                 </MainLayout>
               </ProtectedRoute>
             }

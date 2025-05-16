@@ -16,7 +16,7 @@ export const MainLayout: FC<MainLayoutProps> = ({ children }) => {
     navigate('/login');
   };
 
-  const SettingsTrigger = (
+  const AppsTrigger = (
     <button className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium flex items-center gap-1">
       Apps
       <svg
@@ -48,13 +48,9 @@ export const MainLayout: FC<MainLayoutProps> = ({ children }) => {
                 >
                   Home
                 </Link>
-                
-                <Dropdown trigger={SettingsTrigger}>
+                <Dropdown trigger={AppsTrigger}>
                   <Link to="/pf">
                     <DropdownItem>PF</DropdownItem>
-                  </Link>
-                  <Link to="/sortify">
-                    <DropdownItem>Sortify</DropdownItem>
                   </Link>
                 </Dropdown>
               </div>

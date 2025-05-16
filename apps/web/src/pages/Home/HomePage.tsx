@@ -9,7 +9,7 @@ export const HomePage: React.FC = () => {
       fontSize: '2rem',
       fontWeight: 'bold'
     }}>
-      Hello World
+      Home
     </div>
   );
 };
