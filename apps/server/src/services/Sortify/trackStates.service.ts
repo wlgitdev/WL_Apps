@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { TrackStatesModel as EntityModel, TrackStatesDocument as EntityDocument} from '../../models/Sortify/TrackStates';
 import { ApiBatchResponse, ApiResponse, BatchResult, BatchUpdate} from '@wl-apps/types';
-import { TrackStatesFilters, TrackStatesNamingScheme} from '@wl-apps/types/src/Sortify';
+import { TrackStatesFilters, TrackStatesNamingScheme} from '@wl-apps/types';
 import { DatabaseError, NotFoundError, ValidationError } from '../../errors/error';
 
 export class TrackStatesService {

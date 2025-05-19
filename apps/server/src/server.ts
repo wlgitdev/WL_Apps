@@ -1,5 +1,4 @@
-import express, { Express, Request, Response } from "express";
-import { ApiResponse } from "@wl-apps/types";
+import express, { Express } from "express";
 import { connectDatabase } from "./config/database";
 import routes from "./routes";
 import { env } from "./config/env"

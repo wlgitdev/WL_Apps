@@ -4,7 +4,7 @@ import { asyncHandler } from "../../middleware/async";
 import { FilterConfig } from "@wl-apps/types";
 import { createQueryFilters, withAuth } from "../../middleware/utils";
 import { ValidationError } from "../../errors/error";
-import { TrackStatesFilters,TrackStatesFilterConfig } from "packages/types/src/Sortify";
+import { TrackStatesFilters,TrackStatesFilterConfig } from "@wl-apps/types";
 
 export class TrackStatesController {
   constructor(private trackStatesService: TrackStatesService) {}

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { SpotifyTokensModel, SpotifyTokensDocument } from '../../models/Sortify/SpotifyTokens';
 import { ApiResponse} from '@wl-apps/types';
-import { SpotifyTokensFilters, SpotifyTokensNamingScheme} from '@wl-apps/types/src/Sortify';
+import { SpotifyTokensFilters, SpotifyTokensNamingScheme} from '@wl-apps/types';
 import { DatabaseError, NotFoundError, ValidationError } from '../../errors/error';
 import crypto from 'crypto';
 

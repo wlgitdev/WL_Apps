@@ -13,7 +13,7 @@ import {
   TRACK_STATES_STATUS,
   UserPlaylist,
   TrackStatesExtended,
-} from "@wl-apps/types/src/Sortify";
+} from "@wl-apps/types";
 
 import crypto from "crypto";
 import { SessionService } from "../session.service";

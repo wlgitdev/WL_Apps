@@ -5,7 +5,7 @@ import {
   createReferenceConfig,
   createStringConfig,
 } from '../commonValidators';
-import { SpotifyTokens, SpotifyTokensNamingScheme } from 'packages/types/src/Sortify';
+import { SpotifyTokens, SpotifyTokensNamingScheme } from '@wl-apps/types';
 
 export interface SpotifyTokensDocument extends SpotifyTokens, Document {}
 

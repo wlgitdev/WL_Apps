@@ -8,6 +8,7 @@
     "lib": ["ES2020"],
     "composite": true,
     "noEmit": false,
+    "allowSyntheticDefaultImports": true,
     "paths": {
       "@/*": ["./src/*"],
       "@wl-apps/types": ["../../packages/types/src"],
