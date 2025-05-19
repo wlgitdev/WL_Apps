@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Implementation of Schema Registry",
   "scripts": {
-    "build": "npx tsc --build",
-    "dev": "npx tsc --watch"
+    "build": "tsc --build",
+    "dev": "tsc --watch"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.67.1",
