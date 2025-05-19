@@ -3,10 +3,11 @@
     "version": "1.0.0",
     "private": true,
     "scripts": {
-      "dev": "turbo run dev",
-      "build": "turbo run build",
+      "devstart": "turbo run dev",
+      "devbuild": "turbo run build",
+      "prodbuild": "npm run build --workspaces",
       "clean": "start cleanup.bat",
-      "start": "cd apps/server && npm run start"
+      "prodstart": "cd apps/server && npm run start"
     },
     "workspaces": [
       "apps/*",
