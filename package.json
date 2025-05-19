@@ -5,7 +5,7 @@
     "scripts": {
       "devstart": "turbo run dev",
       "devbuild": "turbo run build",
-      "prodbuild": "npm ci && npm run build --workspaces",
+      "prodbuild": "npm run build --workspaces",
       "clean": "start cleanup.bat",
       "prodstart": "cd apps/server && npm run start"
     },
