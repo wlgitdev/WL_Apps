@@ -5,7 +5,8 @@
     "scripts": {
       "dev": "turbo run dev",
       "build": "turbo run build",
-      "clean": "start cleanup.bat"
+      "clean": "start cleanup.bat",
+      "start": "cd apps/server && npm run start"
     },
     "workspaces": [
       "apps/*",

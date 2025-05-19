@@ -2,7 +2,7 @@ import { ApiResponse, GenericError } from '@wl-apps/types';
 import { getAuthHeader } from '@utils/auth';
 import { ApiError, AuthenticationError, NetworkError, NotFoundError, ValidationError } from './errors';
 
-const apiServerPath = import.meta.env.VITE_API_URL;
+const apiServerPath = import.meta.env.VITE_API_URL || '/api/v1';
 
 export class ApiClient {
   private static async handleResponse<T>(
