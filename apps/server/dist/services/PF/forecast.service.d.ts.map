@@ -1,0 +1,1 @@
+{"version":3,"file":"forecast.service.d.ts","sourceRoot":"","sources":["../../../src/services/PF/forecast.service.ts"],"names":[],"mappings":"AAGA,OAAO,EACL,WAAW,EACX,mBAAmB,EACnB,eAAe,EAGhB,MAAM,gBAAgB,CAAC;AAIxB,qBAAa,eAAe;IAC1B,OAAO,CAAC,kBAAkB,CAA4B;IAEhD,gBAAgB,CACpB,OAAO,EAAE,eAAe,GACvB,OAAO,CAAC,WAAW,CAAC,mBAAmB,EAAE,CAAC,CAAC;IAgD9C,OAAO,CAAC,uBAAuB;CA4ChC"}

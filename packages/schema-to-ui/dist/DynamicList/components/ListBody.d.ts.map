@@ -1,0 +1,1 @@
+{"version":3,"file":"ListBody.d.ts","sourceRoot":"","sources":["../../../src/DynamicList/components/ListBody.tsx"],"names":[],"mappings":"AAAA,OAAO,EAAc,KAAK,EAAE,MAAM,uBAAuB,CAAC;AAI1D,UAAU,aAAa,CAAC,CAAC;IACvB,KAAK,EAAE,KAAK,CAAC,CAAC,CAAC,CAAC;IAChB,eAAe,CAAC,EAAE,OAAO,CAAC;CAC3B;AAED,eAAO,MAAM,QAAQ,GAAI,CAAC,SAAS,MAAM,8BAGtC,aAAa,CAAC,CAAC,CAAC,4CAoDlB,CAAC"}
