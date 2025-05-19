@@ -23,10 +23,10 @@ export default defineConfig(({ mode }) => {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
         '@wl-apps/types': fileURLToPath(
-          new URL('../../packages/types', import.meta.url)
+          new URL('../../packages/types/src', import.meta.url)
         ),
         '@wl-apps/utils': fileURLToPath(
-          new URL('../../packages/utils', import.meta.url)
+          new URL('../../packages/utils/src', import.meta.url)
         ),
         '@wl-apps/schema-to-ui': fileURLToPath(
           new URL('../../packages/schema-to-ui/src', import.meta.url)

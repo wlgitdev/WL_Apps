@@ -2,13 +2,21 @@
   "name": "@wl-apps/types",
   "version": "1.0.0",
   "private": true,
-  "main": "./src/index.ts",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",  
   "scripts": {
     "build": "tsc --build",
     "dev": "tsc --watch"
   },
   "devDependencies": {    
     "@types/spotify-web-api-node": "^5.0.11"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
   }
+  
 }

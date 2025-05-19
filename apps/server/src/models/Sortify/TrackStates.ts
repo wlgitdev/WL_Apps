@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { UserNamingScheme } from '@wl-apps/types';
+import { UserNamingScheme, TRACK_STATES_STATUS, TrackStates, TrackStatesNamingScheme } from '@wl-apps/types';
 import { baseModelSchema } from '../BaseModel';
 import {
   createArrayConfig,
@@ -7,7 +7,6 @@ import {
   createReferenceConfig,
   createStringConfig,
 } from '../commonValidators';
-import { TRACK_STATES_STATUS, TrackStates, TrackStatesNamingScheme } from '@wl-apps/types/src/Sortify';
 
 export interface TrackStatesDocument extends TrackStates, Document {}
 
