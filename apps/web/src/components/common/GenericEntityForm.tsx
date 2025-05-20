@@ -7,7 +7,7 @@ const customTheme: Partial<FormTheme> = {
   form: {
     container: 'space-y-8',
     fieldsContainer: 'space-y-6',
-    submitContainer: 'mt-8'
+    submitContainer: 'mt-8 flex justify-end'
   },
   banner: {
     container: "mb-4 p-4 border rounded-md",
@@ -82,6 +82,12 @@ interface GenericEntityFormProps<T extends Record<string, unknown>> {
   uiSchema: UISchema;
   transformers?: Record<string, (value: FieldValue) => unknown>;
   fetchReferenceData?: (modelName: string) => Promise<Array<{ _id: string; name: string }>>;
+  // Navigation props
+  showNavigation?: boolean;
+  onPrevious?: () => void;
+  onNext?: () => void;
+  hasPrevious?: boolean;
+  hasNext?: boolean;
 }
 
 export const GenericEntityForm = <T extends Record<string, unknown>>({
@@ -93,11 +99,18 @@ export const GenericEntityForm = <T extends Record<string, unknown>>({
   submitLabel,
   uiSchema,
   transformers = {},
-  fetchReferenceData
+  fetchReferenceData,
+  // Navigation props
+  showNavigation = false,
+  onPrevious,
+  onNext,
+  hasPrevious = false,
+  hasNext = false
 }: GenericEntityFormProps<T>) => {
   const [loading, setLoading] = useState(false);
   const [processedSchema, setProcessedSchema] = useState<UISchema>(uiSchema);
   const [referenceDataLoaded, setReferenceDataLoaded] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Register schema if not already registered
   useEffect(() => {
@@ -106,6 +119,12 @@ export const GenericEntityForm = <T extends Record<string, unknown>>({
       registry.registerSchema(title, uiSchema, 'form');
     }
   }, [title, uiSchema]);
+
+  // Reset form state when initialData changes (for navigation)
+  useEffect(() => {
+    // This ensures the form is re-rendered with new data when navigating
+    setProcessedSchema(prevSchema => ({ ...prevSchema }));
+  }, [initialData]);
 
   // Project Specific Schema Modifications
 
@@ -161,6 +180,8 @@ export const GenericEntityForm = <T extends Record<string, unknown>>({
 
   // Transform form data before submission
   const handleSubmit = async (formData: FormData) => {
+    try {
+      setIsSubmitting(true);
     // Transform form data using provided transformers or default to raw values
     const entityData = Object.entries(formData).reduce(
       (record, [key, value]) => ({
@@ -171,6 +192,9 @@ export const GenericEntityForm = <T extends Record<string, unknown>>({
     );
 
     await onSubmit(entityData);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (!referenceDataLoaded) {
@@ -179,12 +203,52 @@ export const GenericEntityForm = <T extends Record<string, unknown>>({
 
   return (
     <Modal open={open} onClose={onClose} title={title}>
+      {/* Navigation buttons */}
+      {showNavigation && (
+        <div className="flex justify-between mb-4">
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={onPrevious}
+              disabled={!hasPrevious || isSubmitting || loading}
+              className={`px-4 py-2 rounded-md ${
+                hasPrevious && !isSubmitting && !loading
+                  ? 'bg-gray-200 hover:bg-gray-300 text-gray-800' 
+                  : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+              }`}
+            >
+              ← Previous
+            </button>
+            <button
+              type="button"
+              onClick={onNext}
+              disabled={!hasNext || isSubmitting || loading}
+              className={`px-4 py-2 rounded-md ${
+                hasNext && !isSubmitting && !loading
+                  ? 'bg-gray-200 hover:bg-gray-300 text-gray-800' 
+                  : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+              }`}
+            >
+              Next →
+            </button>
+          </div>
+          
+          {/* Display current record position if available */}
+          {initialData && initialData.recordId && (
+            <div className="text-sm text-gray-500 flex items-center">
+              Record ID: {String(initialData.recordId).substring(0, 8)}...
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Form */}
       <DynamicForm
         schema={processedSchema}
         initialValues={initialData as FormData}
         onSubmit={handleSubmit}
-        loading={loading}
-        submitLabel={submitLabel}
+        loading={loading || isSubmitting}
+        submitLabel={isSubmitting ? 'Saving...' : submitLabel}
         theme={customTheme}
       />
     </Modal>

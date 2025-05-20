@@ -42,6 +42,7 @@ export function BaseEntityPage<T extends EntityWithName>({
   const [error, setError] = useState<string | null>(null);
   const [formMode, setFormMode] = useState<FormMode | null>(null);
   const [selectedRecord, setSelectedRecord] = useState<T | null>(null);
+  const [currentRecordIndex, setCurrentRecordIndex] = useState<number>(-1);
   const { logout } = useAuth();
   const navigate = useNavigate();
 
@@ -170,10 +171,10 @@ export function BaseEntityPage<T extends EntityWithName>({
       return;
     }
 
-    const record = records.find(record => record.recordId === recordId);
-
-    if (record) {
-      setSelectedRecord(record);
+    const recordIndex = records.findIndex(record => record.recordId === recordId);
+    if (recordIndex !== -1  && records[recordIndex]) {
+      setCurrentRecordIndex(recordIndex);
+      setSelectedRecord(records[recordIndex]);
       setFormMode('edit');
     }
   };
@@ -181,6 +182,7 @@ export function BaseEntityPage<T extends EntityWithName>({
   const handleCloseModal = () => {
     setFormMode(null);
     setSelectedRecord(null);
+    setCurrentRecordIndex(-1);
   };
 
   const handleDelete = async (recordId: string | undefined) => {
@@ -192,6 +194,32 @@ export function BaseEntityPage<T extends EntityWithName>({
       setError(err instanceof Error ? err.message : 'Failed to delete record');
     }
   };
+
+  const handlePrevious = () => {
+    if (!records || currentRecordIndex <= 0) return;
+    
+    const newIndex = currentRecordIndex - 1;
+    const prevRecord = records[newIndex];
+    if (prevRecord) {
+      setCurrentRecordIndex(newIndex);
+      setSelectedRecord(prevRecord);
+    }
+  };
+
+  const handleNext = () => {
+    if (!records || currentRecordIndex >= records.length - 1) return;
+    
+    const newIndex = currentRecordIndex + 1;
+    const nextRecord = records[newIndex];
+    if (nextRecord) {
+      setCurrentRecordIndex(newIndex);
+      setSelectedRecord(nextRecord);
+    }
+  };
+
+  // Determine if previous/next buttons should be enabled
+  const hasPrevious = currentRecordIndex > 0;
+  const hasNext = records && currentRecordIndex < records.length - 1;
 
   return (
     <>
@@ -225,6 +253,11 @@ export function BaseEntityPage<T extends EntityWithName>({
               : `Edit ${entityNamingScheme.SINGULAR}`
           }
           submitLabel={formMode === 'create' ? 'Create' : 'Save Changes'}
+          showNavigation={formMode === 'edit'}
+          onPrevious={handlePrevious}
+          onNext={handleNext}
+          hasPrevious={hasPrevious}
+          hasNext={hasNext}
         />
       )}
     </>
