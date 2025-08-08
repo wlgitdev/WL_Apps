@@ -12,7 +12,11 @@ jobs:
         uses: actions/checkout@v3
       
       # Your deployment steps here
-      
+      - name: Debug Jira settings
+        run: |
+          echo "Project Key: ${{secrets.JIRA_PROJECT_KEY}}"
+          echo "Host: ${{secrets.JIRA_BASE_URL}}"
+        
       - name: JIRA Wizard
       # You may pin to the exact commit or the version.
       # uses: darioblanco/jira-wizard@56dc046a9d78c2bf4daa01319bd2af8e2e218191
