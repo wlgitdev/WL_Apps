@@ -1,0 +1,40 @@
+name: Deploy and Update Jira
+on:
+  push:
+    branches: [main]  # or your deployment branch
+
+jobs:
+  deploy-and-update-jira:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      # Your deployment steps here
+      
+      - name: JIRA Wizard
+      # You may pin to the exact commit or the version.
+      # uses: darioblanco/jira-wizard@56dc046a9d78c2bf4daa01319bd2af8e2e218191
+        uses: darioblanco/jira-wizard@v1.0.0
+        with:
+          # The application to release and to set as component in the JIRA issues.
+          app: wlapps
+          # The JIRA host
+          host: ${{secrets.JIRA_BASE_URL}}
+          # The email to authenticate with the Jira and Confluence APIs
+          email: ${{secrets.JIRA_USER_EMAIL}}
+          # The API token related to the email account to interact with Atlassian APIs
+          apiToken: ${{secrets.JIRA_API_TOKEN}}
+          # The JIRA project key that will reference the pushed release and the given issues. It will be used to detect JIRA issues with [KEY-*] format in the current context.
+          projectKey: ${{secrets.JIRA_PROJECT_KEY}}
+          # The JSON formatted list of JIRA issues that belong to the release. If none given, the action will try to find JIRA issues from the context based on the given issueRegex (or its default).
+          # issues: # optional, default is []
+          # The RegExp pattern to be matched globally for JIRA issues in the given context. If none given, it will automatically search for tasks with `\\[${projectKey}-\\d+\\]` format.
+          # issueRegex: # optional
+          # The transition target of the JIRA issues.
+          transitionId: "Release"
+          # The JIRA version to create, related to the given issues
+          # version: # optional
+          # # True if JIRA version is unpublished
+          # draft: # optional, default is true
+              
