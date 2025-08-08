@@ -1,7 +1,8 @@
 name: Deploy and Update Jira
 on:
   push:
-    branches: [main]  # or your deployment branch
+    tags:
+      - '*'  # triggers on any tag push
 
 jobs:
   deploy-and-update-jira:
